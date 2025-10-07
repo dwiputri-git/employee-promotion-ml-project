@@ -1,7 +1,7 @@
 # 📑 Data Documentation - Employee Promotion ML Project
 
 ## 1. Dataset Overview
-- **Nama file:** [employee-promotion-raw.csv](data/employee-promotion.csv)
+- **Nama file:** [employee-promotion.csv](data/employee-promotion.csv)
 - **Sumber data:** Internal HR (diunggah ke Google Drive)
 - **Jumlah data:** 1000 baris × 10 kolom
 - **Tujuan penggunaan:**  
