@@ -9,8 +9,8 @@
   
 ## 2. Deskripsi Kolom
 
-| Kolom                  | Deskripsi                                                    | Tipe Data | Catatan |
-| :-------------------   | :-----------------------------------------                   | :-------- | :------ |
+| Kolom                  | Deskripsi                                                    | Tipe Data | 
+| :-------------------   | :-----------------------------------------                   | :-------- | 
 | Employee_ID            | ID unik untuk tiap karyawan                                  | object    | 
 | Age                    | Usia karyawan                                                | float     |
 | Years_at_Company       | Lama bekerja di perusahaan (tahun)                           | float     |
