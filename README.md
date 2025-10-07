@@ -21,5 +21,9 @@ Proyek ini bertujuan untuk memprediksi apakah seorang karyawan layak dipromosika
 6. Modeling & Evaluation  
 
 ## 📁 Struktur Folder 
-``` employee-promotion-ml-project/ ├── data/ ├── notebooks/ ├── src/ └── README.md ```
+``` employee-promotion-ml-project/ 
+├── data/
+├── notebooks/
+├── src/
+└── README.md ```
 
