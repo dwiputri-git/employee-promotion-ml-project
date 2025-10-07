@@ -12,13 +12,18 @@ Proyek ini bertujuan untuk memprediksi apakah seorang karyawan layak dipromosika
 
 ---
 
-## ⚙️ Tahapan Proyek
-1. Data documentation  
-2. Exploratory Data Analysis (EDA)  
-3. Data preprocessing  
-4. Model training & evaluation  
-
----
+## Tahapan Proyek
+1. Business Understanding 
+2. Data Understanding
+   - Data Documentation
+   - Exploratory Data Analysis (EDA)  
+5. Data Preparation
+6. Modeling & Evaluation  
 
 ## 📁 Struktur Folder
+employee-promotion-ml-project/
+├── data/
+├── notebooks/
+├── src/
+└── README.md
 
