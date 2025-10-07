@@ -25,5 +25,5 @@ Proyek ini bertujuan untuk memprediksi apakah seorang karyawan layak dipromosika
 ├── data/
 ├── notebooks/
 ├── src/
-└── README.md ```
+└── README.md
 
