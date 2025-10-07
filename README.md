@@ -5,9 +5,9 @@ Proyek ini bertujuan untuk memprediksi apakah seorang karyawan layak dipromosika
 ---
 
 ## Dataset
-- **File:** `employee_promotion.csv`  
-- **Lokasi:** `/data/employee_promotion.csv`  
-- **Tujuan:** Prediksi promosi karyawan  
+- **File:** `employee_promotion-raw.csv`  
+- **Lokasi:** `/data/employee_promotion-raw.csv`  
+- **Tujuan:** Prediksi kelayakan promosi karyawan  
 - 📄 [Lihat Data Documentation](data_documentation/data_documentation.md)
 
 ---
