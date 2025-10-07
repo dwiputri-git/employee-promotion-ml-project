@@ -36,7 +36,8 @@
 
 ### 4. Reproducibility Data
 Untuk memastikan hasil pengecekan ini bisa direproduksi kembali, jalankan notebook berikut:
-📄 [01_data_intro.ipynb](01_data_intro.ipynb)
+📄 [01_data_intro.ipynb](../notebooks/01_data_intro.ipynb)
+
 
 ### Kesimpulan Awal
 - Dataset memiliki beberapa missing value yang perlu ditangani saat preprocessing.
