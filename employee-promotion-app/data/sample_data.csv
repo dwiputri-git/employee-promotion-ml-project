@@ -1,0 +1,11 @@
+Employee_ID,Age,Years_at_Company,Performance_Score,Leadership_Score,Training_Hours,Projects_Handled,Current_Position_Level,Peer_Review_Score,Promotion_Eligible
+EMP_001,28,2,85,78,45,3,Junior,82,1
+EMP_002,35,5,72,65,38,7,Mid,75,0
+EMP_003,42,8,88,82,52,9,Senior,89,1
+EMP_004,31,3,69,58,35,4,Junior,71,0
+EMP_005,38,6,91,85,48,8,Lead,92,1
+EMP_006,29,1,76,62,42,2,Junior,78,0
+EMP_007,45,12,79,71,55,11,Senior,81,0
+EMP_008,33,4,84,77,46,6,Mid,86,1
+EMP_009,27,2,73,59,39,3,Junior,74,0
+EMP_010,40,7,87,80,51,10,Senior,88,1

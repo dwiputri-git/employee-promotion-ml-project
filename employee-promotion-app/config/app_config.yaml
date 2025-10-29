@@ -1,0 +1,19 @@
+app:
+  title: "Employee Promotion Prediction"
+  page_icon: "🚀"
+  layout: "wide"
+  initial_sidebar_state: "expanded"
+
+model:
+  path: "models/trained_model.pkl"
+  preprocessor_path: "models/preprocessor.pkl"
+  feature_names_path: "models/feature_names.pkl"
+  threshold: 0.209
+
+data:
+  sample_data_path: "data/sample_data.csv"
+  historical_predictions_path: "data/historical_predictions.csv"
+
+ai:
+  enable_insights: true
+  max_recommendations: 5
