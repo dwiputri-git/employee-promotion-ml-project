@@ -1,0 +1,42 @@
+seed: 42
+
+paths:
+  data_csv: "../data/employee-promotion.csv"
+  artifacts_dir: "./artifacts"
+  logs_dir: "./logs"
+
+cv:
+  n_splits: 5
+  n_repeats: 3
+  test_size: 0.2
+
+metrics:
+  primary: "prauc"
+  tracked:
+    - accuracy
+    - f1_macro
+    - f1_weighted
+    - rocauc
+    - prauc
+    - brier
+
+imbalance:
+  strategy: "class_weight"
+
+tracking:
+  use_mlflow: false
+  mlflow_tracking_uri: "./mlruns"
+  experiment_name: "employee_promotion_v2"
+  offline_csv_log: "./logs/experiments.csv"
+
+preprocessing:
+  scale_numeric: "standard"
+  encode_categorical: "onehot"
+  handle_outliers: "robust"
+  impute_numeric: "median"
+  impute_categorical: "most_frequent"
+  convert_target_to_int: true
+
+models:
+  candidates: ["logreg", "rf", "xgb", "lgbm", "catboost"]
+
