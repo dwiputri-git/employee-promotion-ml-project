@@ -34,9 +34,9 @@ if uploaded_file is not None:
     try:
         # Baca file
         if uploaded_file.name.endswith(".csv"):
-            data = pd.read_csv(uploaded_file)
+            data = pd.read_csv(uploaded_file, sep=';')
         else:
-            data = pd.read_excel(uploaded_file)
+            data = pd.read_excel(uploaded_file, sep=';')
 
         st.subheader("📋 Data yang diupload:")
         st.dataframe(data.head())
