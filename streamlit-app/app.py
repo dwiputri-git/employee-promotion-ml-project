@@ -8,7 +8,7 @@ import pickle
 @st.cache_resource
 def load_model():
     try:
-        with open("model/model.pkl", "rb") as file:
+        with open("streamlit-app/model/model.pkl", "rb") as file:
             model = pickle.load(file)
         return model
     except Exception as e:
