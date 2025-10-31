@@ -3,7 +3,7 @@
 ## Local Development
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.10
 - pip or conda
 
 ### Installation
@@ -45,18 +45,19 @@ git push origin main
    - Go to [share.streamlit.io](https://share.streamlit.io)
    - Connect your GitHub repository
    - Select the `employee-promotion-app` folder
+   - **Note:** The `runtime.txt` file specifies Python 3.10 automatically
    - Deploy!
 
 ### Option 2: Docker Deployment
 
 1. **Create Dockerfile:**
 ```dockerfile
-FROM python:3.9-slim
+FROM python:3.10-slim
 
 WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
