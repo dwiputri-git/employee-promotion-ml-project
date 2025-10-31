@@ -1,182 +1,182 @@
-"""
-Prediction engine for employee promotion model
-"""
-import joblib
-import numpy as np
-import pandas as pd
+# app.py
+import os
 from pathlib import Path
-from typing import Union, Tuple, Optional
-import yaml
+import streamlit as st
+import pandas as pd
+import cloudpickle
+import matplotlib.pyplot as plt
 
+# ===============================
+# 1️⃣ CONFIG & THEME
+# ===============================
+st.set_page_config(page_title="HR Dashboard - ABC Company", layout="wide")
 
-class PromotionPredictor:
-    """Main prediction class for employee promotion model"""
-    
-    def __init__(self, model_path: str, preprocessor_path: str, 
-                 feature_names_path: str, threshold: float = 0.209):
-        self.model_path = model_path
-        self.preprocessor_path = preprocessor_path
-        self.feature_names_path = feature_names_path
-        self.threshold = threshold
-        
-        self.model = None
-        self.preprocessor = None
-        self.feature_names = None
-        self.is_loaded = False
-    
-    def load_model(self):
-        """Load trained model and preprocessor"""
-        try:
-            # Load model
-            self.model = joblib.load(self.model_path)
-            
-            # Load preprocessor
-            self.preprocessor = joblib.load(self.preprocessor_path)
-            
-            # Load feature names
-            self.feature_names = joblib.load(self.feature_names_path)
-            
-            self.is_loaded = True
-            return True
-            
-        except Exception as e:
-            print(f"Error loading model: {e}")
-            return False
-    
-    def predict(self, X: Union[pd.DataFrame, np.ndarray]) -> Tuple[np.ndarray, np.ndarray]:
-        """
-        Make predictions on new data
-        
-        Args:
-            X: Input features (DataFrame or array)
-            
-        Returns:
-            predictions: Binary predictions (0 or 1)
-            probabilities: Prediction probabilities
-        """
-        if not self.is_loaded:
-            if not self.load_model():
-                raise ValueError("Model not loaded successfully")
-        
-        # Transform features if needed
-        if hasattr(self.preprocessor, 'transform'):
-            X_transformed = self.preprocessor.transform(X)
+st.markdown("""
+<style>
+[data-testid="stAppViewContainer"] { background-color: #f7faff; }
+[data-testid="stSidebar"] { background-color: #0f4c81; color: white; }
+[data-testid="stSidebar"] * { color: white !important; }
+.main-header { background-color: #0078d4; padding: 12px; border-radius: 10px;
+               color: white; font-size: 26px; font-weight: bold; text-align: center; }
+h3 { color: #0f4c81; }
+div[data-testid="stMetricValue"] { color: #0078d4; }
+div.stButton > button { background-color: #0078d4; color: white; border-radius: 8px;
+                        height: 3em; font-weight: 600; border: none; }
+div.stButton > button:hover { background-color: #0f4c81; color: #f0f0f0; }
+</style>
+""", unsafe_allow_html=True)
+
+# ===============================
+# 2️⃣ LOAD DATA & MODEL
+# ===============================
+if "__file__" in globals():
+    BASE_DIR = Path(__file__).parent
+else:
+    BASE_DIR = Path(os.getcwd())
+
+data_path = BASE_DIR.parent / "Data" / "Rakamin Bootcamp - Dataset - Promotion Dataset.csv"
+model_path = BASE_DIR / "model1.pkl"
+
+df = pd.read_csv(data_path, sep=";")
+
+# Load model RandomForest dengan cloudpickle
+with open(model_path, "rb") as f:
+    model = cloudpickle.load(f)
+
+# Feature columns dari model
+if hasattr(model, "feature_names_in_"):
+    feature_cols = model.feature_names_in_
+else:
+    feature_cols = df.drop(columns=["Promotion_Eligible", "Employee_ID"], errors="ignore").columns
+
+# ===============================
+# 3️⃣ HEADER
+# ===============================
+logo_path = BASE_DIR / "ALGORANGER 2 Logo with Graph and Hat (1).png"
+
+col1, col2 = st.columns([1, 5])
+with col1:
+    st.image(str(logo_path), width=85)
+with col2:
+    st.markdown('<div class="main-header">HR Dashboard - ABC Company</div>', unsafe_allow_html=True)
+
+st.markdown("---")
+
+# ===============================
+# 4️⃣ SIDEBAR NAVIGATION
+# ===============================
+menu = st.sidebar.radio(
+    "Navigation",
+    ["General Dashboard", "Talent Development", "Promotion", "Absency", "Recruitment"],
+    index=2
+)
+
+# ===============================
+# 5️⃣ PROMOTION DASHBOARD
+# ===============================
+if menu == "Promotion":
+    st.subheader("HR - Promotion Dashboard")
+
+    # --- Metrics ---
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.metric("Total Employees", len(df))
+    with col2:
+        avg_perf = df["Performance_Score"].mean().round(2)
+        st.metric("Avg Performance Score", f"{avg_perf}/5")
+    with col3:
+        promo_ready = (df["Promotion_Eligible"].sum() / len(df)) * 100
+        st.metric("Promotion Readiness", f"{promo_ready:.1f}%")
+
+    # --- Career Progression Charts ---
+    st.markdown("### Career Progression Insights")
+    col4, col5 = st.columns(2)
+
+    with col4:
+        exp_by_level = df.groupby("Current_Position_Level")["Years_at_Company"].mean()
+        fig1, ax1 = plt.subplots()
+        ax1.bar(exp_by_level.index, exp_by_level.values, color="#0078d4")
+        ax1.set_xlabel("Current Position Level")
+        ax1.set_ylabel("Average Years at Company")
+        ax1.set_title("Average Tenure by Position Level")
+        st.pyplot(fig1)
+
+    with col5:
+        stacked_data = df.groupby(["Current_Position_Level", "Promotion_Eligible"])["Performance_Score"].mean().unstack(fill_value=0)
+        fig2, ax2 = plt.subplots()
+        stacked_data.plot(kind="bar", stacked=True, color=["#ff7f0e", "#1f77b4"], ax=ax2)
+        ax2.set_xlabel("Current Position Level")
+        ax2.set_ylabel("Average Performance Score")
+        ax2.set_title("Performance Score by Position Level and Promotion Eligibility")
+        st.pyplot(fig2)
+
+    st.markdown("---")
+    st.subheader("Predictive HR - Promotion")
+
+    # --- Prepare Data for Prediction ---
+    X = df.drop(columns=["Promotion_Eligible", "Employee_ID"], errors="ignore")
+    X = pd.get_dummies(X, drop_first=True)
+
+    missing_cols = set(feature_cols) - set(X.columns)
+    for col in missing_cols:
+        X[col] = 0
+    X = X[feature_cols]
+
+    # --- Top 5 Recommendations ---
+    df["Predicted_Promotion"] = model.predict(X)
+    top5 = df[df["Predicted_Promotion"] == 1].head(5)
+    st.markdown("### Top 5 Employees Recommended for Promotion")
+    st.table(top5[["Employee_ID", "Current_Position_Level", "Performance_Score", "Predicted_Promotion"]])
+
+    # --- Individual Employee Prediction ---
+    st.markdown("---")
+    st.subheader("🔍 Individual Employee Promotion Prediction")
+    emp_id = st.text_input("Enter Employee ID (Format: EMPXXXX):")
+
+    if emp_id:
+        emp_row = df[df["Employee_ID"] == emp_id]
+        if emp_row.empty:
+            st.warning("Employee ID not found. Please check the format (e.g., EMP0001).")
         else:
-            X_transformed = X
-        
-        # Get probabilities
-        probabilities = self.model.predict_proba(X_transformed)[:, 1]
-        
-        # Apply threshold
-        predictions = (probabilities >= self.threshold).astype(int)
-        
-        return predictions, probabilities
-    
-    def predict_single(self, features: dict) -> Tuple[int, float, dict]:
-        """
-        Predict for a single employee
-        
-        Args:
-            features: Dictionary of feature values
-            
-        Returns:
-            prediction: Binary prediction (0 or 1)
-            probability: Prediction probability
-            details: Additional prediction details
-        """
-        # Convert to DataFrame
-        df = pd.DataFrame([features])
-        
-        # Make prediction
-        predictions, probabilities = self.predict(df)
-        
-        prediction = predictions[0]
-        probability = probabilities[0]
-        
-        # Create details
-        details = {
-            'prediction': prediction,
-            'probability': probability,
-            'confidence': 'High' if probability > 0.7 or probability < 0.3 else 'Medium',
-            'threshold_used': self.threshold,
-            'above_threshold': probability >= self.threshold
-        }
-        
-        return prediction, probability, details
-    
-    def get_feature_importance(self) -> Optional[dict]:
-        """Get feature importance if available"""
-        if not self.is_loaded:
-            if not self.load_model():
-                return None
-        
-        if hasattr(self.model, 'coef_'):
-            # Logistic regression coefficients
-            importance = dict(zip(self.feature_names, self.model.coef_[0]))
-            return dict(sorted(importance.items(), key=lambda x: abs(x[1]), reverse=True))
-        elif hasattr(self.model, 'feature_importances_'):
-            # Tree-based feature importance
-            importance = dict(zip(self.feature_names, self.model.feature_importances_))
-            return dict(sorted(importance.items(), key=lambda x: x[1], reverse=True))
-        
-        return None
-    
-    def get_model_info(self) -> dict:
-        """Get model information"""
-        if not self.is_loaded:
-            return {'status': 'Not loaded'}
-        
-        info = {
-            'model_type': type(self.model).__name__,
-            'threshold': self.threshold,
-            'n_features': len(self.feature_names) if self.feature_names else 0,
-            'feature_names': self.feature_names[:10] if self.feature_names else []  # First 10 features
-        }
-        
-        return info
+            emp_X = emp_row.drop(columns=["Promotion_Eligible", "Employee_ID"], errors="ignore")
+            emp_X = pd.get_dummies(emp_X, drop_first=True)
+            for col in missing_cols:
+                if col not in emp_X.columns:
+                    emp_X[col] = 0
+            emp_X = emp_X[feature_cols]
 
+            prediction = model.predict(emp_X)[0]
+            result = "✅ Eligible for Promotion" if prediction == 1 else "❌ Not Eligible for Promotion"
+            st.success(f"**Prediction for {emp_id}: {result}**")
 
-def load_config(config_path: str = "config/app_config.yaml") -> dict:
-    """Load app configuration"""
-    with open(config_path, 'r') as f:
-        config = yaml.safe_load(f)
-    return config
+    # --- Batch CSV Prediction ---
+    st.markdown("---")
+    st.subheader("📤 Upload CSV for Batch Promotion Prediction")
+    uploaded_file = st.file_uploader("Upload your employee data (CSV with same structure)", type=["csv"])
 
+    if uploaded_file:
+        try:
+            new_df = pd.read_csv(uploaded_file, sep=";", engine="python")
+            st.write("✅ File uploaded successfully! Preview:")
+            st.dataframe(new_df.head())
 
-def create_predictor_from_config(config_path: str = "config/app_config.yaml") -> PromotionPredictor:
-    """Create predictor from configuration file"""
-    config = load_config(config_path)
-    model_config = config['model']
-    
-    return PromotionPredictor(
-        model_path=model_config['path'],
-        preprocessor_path=model_config['preprocessor_path'],
-        feature_names_path=model_config['feature_names_path'],
-        threshold=model_config['threshold']
-    )
+            new_X = pd.get_dummies(new_df.drop(columns=["Promotion_Eligible", "Employee_ID"], errors="ignore"), drop_first=True)
+            for col in missing_cols:
+                if col not in new_X.columns:
+                    new_X[col] = 0
+            new_X = new_X[feature_cols]
 
+            new_df["Predicted_Promotion"] = model.predict(new_X)
+            st.markdown("### Prediction Results")
+            st.dataframe(new_df[["Employee_ID", "Predicted_Promotion"]])
 
-def batch_predict(df: pd.DataFrame, predictor: PromotionPredictor) -> pd.DataFrame:
-    """
-    Make batch predictions and return DataFrame with results
-    
-    Args:
-        df: Input DataFrame
-        predictor: Trained predictor
-        
-    Returns:
-        DataFrame with predictions and probabilities
-    """
-    predictions, probabilities = predictor.predict(df)
-    
-    result_df = df.copy()
-    result_df['prediction'] = predictions
-    result_df['probability'] = probabilities
-    result_df['confidence'] = result_df['probability'].apply(
-        lambda x: 'High' if x > 0.7 or x < 0.3 else 'Medium'
-    )
-    result_df['recommendation'] = result_df['prediction'].apply(
-        lambda x: 'Promote' if x == 1 else 'Not Ready'
-    )
-    
-    return result_df
+            promo_summary = new_df["Predicted_Promotion"].value_counts()
+            fig3, ax3 = plt.subplots()
+            promo_summary.plot(kind="bar", color=["#f28e2b", "#4e79a7"], ax=ax3)
+            ax3.set_title("Promotion Prediction Summary")
+            ax3.set_xlabel("Predicted Promotion (0=No, 1=Yes)")
+            ax3.set_ylabel("Employee Count")
+            st.pyplot(fig3)
+
+        except Exception as e:
+            st.error(f"⚠️ Error processing uploaded file: {e}")
