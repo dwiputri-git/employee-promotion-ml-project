@@ -180,3 +180,4 @@ def batch_predict(df: pd.DataFrame, predictor: PromotionPredictor) -> pd.DataFra
     )
     
     return result_df
+

@@ -197,3 +197,4 @@ def preprocess_pipeline(df, target_col='Promotion_Eligible', fit_preprocessor=Tr
         X_transformed = preprocessor.transform(X) if preprocessor.is_fitted else X
     
     return X_transformed, y, preprocessor, df_features
+

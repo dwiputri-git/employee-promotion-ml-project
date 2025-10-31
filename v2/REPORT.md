@@ -140,3 +140,4 @@ This report documents the reworked pipeline and findings to satisfy the rubric a
 3. Calibrate chosen models; perform threshold tuning; evaluate on a held-out test set.
 4. Generate SHAP analyses; produce fairness metrics per slice.
 5. Compile final confusion matrix, business impact discussion, and explicit recommendations.
+

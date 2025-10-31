@@ -135,8 +135,8 @@ This report documents the complete machine learning pipeline for predicting empl
 | Random Forest | 0.694 | 0.456 | 0.604 | 0.532 | 0.344 | 0.213 |
 | Gradient Boosting | 0.677 | 0.483 | 0.614 | 0.516 | 0.338 | 0.224 |
 | CatBoost | 0.664 | 0.483 | 0.609 | 0.510 | 0.329 | 0.240 |
-| XGBoost | 0.658 | 0.500 | 0.616 | 0.505 | 0.328 | 0.251 |
-| LightGBM | 0.642 | 0.497 | 0.608 | 0.509 | 0.323 | 0.279 |
+| XGBoost | 0.658 | 0.500 | 0.616 | 0.505 | 0.328 | 0.251 | *
+| LightGBM | 0.642 | 0.497 | 0.608 | 0.509 | 0.323 | 0.279 | *
 
 **Key Findings:**
 - **Best PR-AUC:** Logistic Regression (0.350) — best at identifying eligible candidates
@@ -357,4 +357,5 @@ The V3 pipeline successfully addresses all rubric requirements, delivering a rep
 ---
 
 *Report generated from V3 notebook execution results*
+
 

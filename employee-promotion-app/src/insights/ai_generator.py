@@ -218,3 +218,4 @@ def create_sample_insights() -> Dict[str, Any]:
             'probability_std': 0.23
         }
     }
+
