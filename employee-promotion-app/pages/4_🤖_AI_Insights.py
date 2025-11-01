@@ -227,5 +227,5 @@ def show_ai_insights():
     else:
         st.success("✅ No missed opportunities detected")
 
-if __name__ == "__main__":
-    show_ai_insights()
+#if __name__ == "__main__":
+    #show_ai_insights()
