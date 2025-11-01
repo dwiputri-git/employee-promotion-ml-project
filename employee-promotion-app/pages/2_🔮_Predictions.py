@@ -168,7 +168,7 @@ def show_predictions():
         @st.cache_data
         def load_real_data():
             # Load the actual employee promotion data
-            data_path = Path('employee-promotion-app/data/employee-promotion.csv')
+            data_path = Path(__file__).parent.parent / 'data' / 'employee-promotion.csv'
             
             # Handle semicolon delimiter
             df = pd.read_csv(data_path, sep=';')
@@ -179,9 +179,20 @@ def show_predictions():
             
             # Remove rows with negative values in numeric columns
             numeric_cols = df.select_dtypes(include=[np.number]).columns
-            for col in numeric_cols:
-                if col != 'Promotion_Eligible':
-                    df = df[df[col] >= 0]
+            neg_mask = (df[numeric_cols] < 0).any(axis=1)
+            df = df[~neg_mask]
+            
+            # Outliers by IQR (drop if <5%, else winsorize)
+            for c in numeric_cols:
+                q1, q3 = df[c].quantile(0.25), df[c].quantile(0.75)
+                iqr = q3 - q1
+                lb, ub = q1 - 1.5 * iqr, q3 + 1.5 * iqr
+                mask = (df[c] < lb) | (df[c] > ub)
+                pct = 100 * mask.mean()
+                if pct < 5:
+                    df = df[~mask]
+                else:
+                    df[c] = np.where(df[c] < lb, lb, np.where(df[c] > ub, ub, df[c]))
             
             return df
         
