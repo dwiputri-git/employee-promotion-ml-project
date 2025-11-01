@@ -24,7 +24,7 @@ def show_dashboard():
     @st.cache_data
     def load_real_data():
         # Load the actual employee promotion data
-        data_path = Path('../data/employee-promotion.csv')
+        data_path = Path('employee-promotion-app/data/employee-promotion.csv')
         
         # Handle semicolon delimiter
         df = pd.read_csv(data_path, sep=';')
