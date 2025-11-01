@@ -22,7 +22,7 @@ def show_dashboard():
     
     # Load real data
     @st.cache_data
-    def load_real_data():
+def load_real_data():
     # Load the actual employee promotion data
     data_path = Path('/content/employee-promotion (2).csv')
 
