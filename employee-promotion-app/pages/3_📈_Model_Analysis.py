@@ -26,7 +26,7 @@ def show_model_analysis():
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.metric("Model Type", "Logistic Regression")
+        st.metric("Model Type", "RandomForest Tuned")
     
     with col2:
         st.metric("Training Data", "939 samples")
