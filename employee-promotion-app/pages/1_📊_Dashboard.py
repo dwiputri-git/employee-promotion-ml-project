@@ -40,15 +40,15 @@ def load_real_data():
 
     # Outliers by IQR (drop if <5%, else winsorize)
     for c in numeric_cols:
-      q1, q3 = df[c].quantile(0.25), df[c].quantile(0.75)
-      iqr = q3 - q1
-      lb, ub = q1 - 1.5*iqr, q3 + 1.5*iqr
-      mask = (df[c] < lb) | (df[c] > ub)
-      pct = 100 * mask.mean()
-      if pct < 5:
-        df = df[~mask]
-      else:
-        df[c] = np.where(df[c] < lb, lb, np.where(df[c] > ub, ub, df[c]))
+        q1, q3 = df[c].quantile(0.25), df[c].quantile(0.75)
+        iqr = q3 - q1
+        lb, ub = q1 - 1.5*iqr, q3 + 1.5*iqr
+        mask = (df[c] < lb) | (df[c] > ub)
+        pct = 100 * mask.mean()
+        if pct < 5:
+            df = df[~mask]
+        else:
+            df[c] = np.where(df[c] < lb, lb, np.where(df[c] > ub, ub, df[c]))
 
     return df
     
