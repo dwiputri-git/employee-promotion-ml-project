@@ -21,7 +21,7 @@ def show_predictions():
     # Data input methods
     input_method = st.radio(
         "Choose input method:",
-        ["Upload CSV File", "Manual Form Input", "Use Sample Data"]
+        ["Upload CSV File", "Manual Form Input"]
     )
     
     if input_method == "Upload CSV File":
