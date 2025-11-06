@@ -48,7 +48,6 @@ Navigate using the sidebar to explore:
 1. **📊 Dashboard** - View KPIs, model performance, and prediction tables
 2. **🔮 Predictions** - Upload CSV or input data manually for predictions  
 3. **📈 Model Analysis** - Detailed model evaluation and fairness analysis
-4. **🤖 AI Insights** - AI-powered recommendations and pattern analysis
 
 ### 🚀 Getting Started
 
