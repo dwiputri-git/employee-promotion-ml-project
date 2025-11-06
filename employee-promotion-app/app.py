@@ -34,7 +34,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Welcome page
-st.markdown('<h1 class="main-header">🚀 Employee Promotion Prediction</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">🧑‍💼 Employee Promotion Prediction</h1>', unsafe_allow_html=True)
 
 st.markdown("""
 ## Welcome!
