@@ -7,7 +7,7 @@ import streamlit as st
 # Page configuration
 st.set_page_config(
     page_title="Employee Promotion Prediction",
-    page_icon="🧑‍💼",
+    page_icon="💼",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -17,7 +17,7 @@ st.markdown("""
 <style>
     .main-header {
         font-size: 2.5rem;
-        color: #1f77b4;
+        color: #e022d4;
         text-align: center;
         margin-bottom: 2rem;
     }
@@ -34,7 +34,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Welcome page
-st.markdown('<h1 class="main-header">🧑‍💼 Employee Promotion Prediction</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">Employee Promotion Prediction</h1>', unsafe_allow_html=True)
 
 st.markdown("""
 ## Welcome!
